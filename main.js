@@ -167,35 +167,24 @@ videopeer.on('call', function(call) {
             const videoElement = document.getElementById("receiving-video");
             if (videoElement) {
                 videoElement.srcObject = stream;
-                // 视频播放前等待音频
-                let audioReady = false;
-                const audioTrack = stream.getAudioTracks()[0];
-                if (audioTrack) {
-                    console.log('音频轨道存在，开始播放');
-                    const audioElement = document.createElement('audio');
-                    audioElement.srcObject = audioTrack;
-                    audioElement.muted = true; // 先静音，避免音频突然发出吓到用户
-                    audioElement.addEventListener('canplaythrough', function() {
-                        console.log('音频加载完成');
-                        audioElement.muted = false; // 音频加载完成，移除静音
-                        audioReady = true; // 设置标志位，表示音频准备好了
-                    });
-                    audioElement.play();
-                } else {
-                    console.log('没有音频轨道');
-                }
-
                 videoElement.play().then(() => {
                     console.log('视频播放成功');
-                    if (!audioReady) {
-                        console.log('音频未准备好，暂停视频播放');
-                        videoElement.pause();
-                    }
                 }).catch(error => {
                     console.error('视频播放失败', error);
                 });
             } else {
                 console.error('视频元素不存在');
+            }
+
+            // 获取音频轨道并播放
+            const audioTrack = stream.getAudioTracks()[0];
+            if (audioTrack) {
+                console.log('音频轨道存在，开始播放');
+                const audioElement = document.createElement('audio');
+                audioElement.srcObject = audioTrack;
+                audioElement.play();
+            } else {
+                console.log('没有音频轨道');
             }
         });
 
