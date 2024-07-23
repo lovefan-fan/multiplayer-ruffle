@@ -102,27 +102,33 @@ function on_guest_load() {
     })
 videopeer.on('call', function(call) {
     console.log("接收到呼叫");
-    call.on('stream', function(stream) {
-        console.log("在流上，现在尝试播放视频流");
 
-        const videoElement = document.getElementById("receiving-video");
-        if (videoElement) {
-            videoElement.srcObject = stream;
-            videoElement.play().then(() => {
-                console.log('视频播放成功');
-            }).catch(error => {
-                console.error('视频播放失败', error);
-            });
-        } else {
-            console.error('视频元素不存在');
-        }
-
-        // 原有的设置视频流和播放的代码可以注释掉或删除
-        // document.getElementById("receiving-video").srcObject = stream;
-        // document.getElementById("receiving-video").play();
-    });
+    // 先回答呼叫
     call.answer();
+
+    // 创建一个Promise，它将在2秒后解析
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    // 在处理流之前等待2秒
+    delay(2000).then(() => {
+        call.on('stream', function(stream) {
+            console.log("在流上，现在尝试播放视频流:", stream);
+
+            const videoElement = document.getElementById("receiving-video");
+            if (videoElement) {
+                videoElement.srcObject = stream;
+                videoElement.play().then(() => {
+                    console.log('视频播放成功');
+                }).catch(error => {
+                    console.error('视频播放失败', error);
+                });
+            } else {
+                console.error('视频元素不存在');
+            }
+        });
+    });
 });
+
 
     displayPeerIdIntervalId = setInterval(function() {
         if (guest_data_id != null && guest_video_id != null) {
