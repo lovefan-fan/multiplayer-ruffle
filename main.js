@@ -17,7 +17,7 @@ function on_host_load() {
     player.style.width = "100%";
     player.style.height = "800px";
     container.appendChild(player);
-
+    player.load("boxhead2play.swf");
     const peer = new Peer({
         host: 'fan.jiuchengyixi.top',
         port: 9000,
@@ -53,17 +53,15 @@ function on_host_load() {
             video_track.contentHint = "motion";
             var call = p.call(guest_video_id, stream);
             console.log("视频流=", stream);
-            document.getElementById("receiving-video").srcObject = stream;
-            document.getElementById("receiving-video").play();
+            // 禁用，我们将在补偿延迟时重新启用此功能
+            // document.getElementById("receiving-video").srcObject = stream;
+            // document.getElementById("receiving-video").play();
             clearInterval(callIntervalId);
         } else {
             console.log("画布仍然为空");
         }
     }, 1000, videopeer);
-
-    player.load("boxhead2play.swf");
 }
-
 
 function transmitKeystroke(conn, type, event) {
     console.log("正在传输 ", type, event);
@@ -161,19 +159,11 @@ function click_host() {
         <div class="button-row"><button onclick="submit_host_id()">开始游戏</button></div>
         <div id="error-connectiondetails"></div>
     `
-
-    const ruffle = window.RufflePlayer.newest();
-    const player = ruffle.createPlayer();
-    const container = document.getElementById("container");
-    player.style.width = "100%";
-    player.style.height = "800px";
-    container.appendChild(player);
-    player.load("boxhead2play.swf");
 }
-
 
 function click_guest() {
     document.getElementById("hostguestchoice").remove();
     document.getElementById("connectiondetails").innerHTML =
         "<h1>连接信息</h1><p>正在连接…</p>";
+    on_guest_load();
 }
