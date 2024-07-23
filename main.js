@@ -100,17 +100,29 @@ function on_guest_load() {
         console.log('已打开，视频对等端ID是: ' + id);
         guest_video_id = id;
     })
-    videopeer.on('call', function(call) {
-        console.log("接收到呼叫");
-        call.on('stream', function(stream) {
-            console.log("在流上，将视频元素设置为 ", stream);
-            const video_track = stream.getVideoTracks()[0];
-            video_track.contentHint = "motion";
-            document.getElementById("receiving-video").srcObject = stream;
-            document.getElementById("receiving-video").play();
-        });
-        call.answer();
+videopeer.on('call', function(call) {
+    console.log("接收到呼叫");
+    call.on('stream', function(stream) {
+        console.log("在流上，现在尝试播放视频流");
+
+        const videoElement = document.getElementById("receiving-video");
+        if (videoElement) {
+            videoElement.srcObject = stream;
+            videoElement.play().then(() => {
+                console.log('视频播放成功');
+            }).catch(error => {
+                console.error('视频播放失败', error);
+            });
+        } else {
+            console.error('视频元素不存在');
+        }
+
+        // 原有的设置视频流和播放的代码可以注释掉或删除
+        // document.getElementById("receiving-video").srcObject = stream;
+        // document.getElementById("receiving-video").play();
     });
+    call.answer();
+});
 
     displayPeerIdIntervalId = setInterval(function() {
         if (guest_data_id != null && guest_video_id != null) {
