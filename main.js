@@ -19,7 +19,11 @@ function on_host_load() {
     player.style.height = "800px";
     container.appendChild(player);
     player.load("tank-trouble.swf");
-    const peer = new Peer();
+    const peer = new Peer({  
+        host: '127.0.0.1',  // 可选，指向您的PeerJS服务器（如果有的话）  
+        port: 9000,                  // PeerJS服务器的端口（如果有的话）  
+        path: '/myapp'            // PeerJS服务器的路径（如果有的话） 
+    });
     console.log("peer=", peer);
     peer.on('open', function(id) {
         console.log('My peer ID is: ' + id);
@@ -37,7 +41,11 @@ function on_host_load() {
     });
         
 
-    const videopeer = new Peer();
+    const videopeer = new Peer({  
+        host: '127.0.0.1',  // 可选，指向您的PeerJS服务器（如果有的话）  
+        port: 9000,                  // PeerJS服务器的端口（如果有的话）  
+        path: '/myapp'            // PeerJS服务器的路径（如果有的话） 
+    });
     callIntervalId = setInterval(function(p) {
         const canvasElt = document.querySelector("ruffle-player")?.shadowRoot.querySelector("canvas");
         if (canvasElt != null) {
@@ -65,7 +73,11 @@ function transmitKeystroke(conn, type, event) {
 var displayPeerIdIntervalId = null;
 
 function on_guest_load() {
-    const peer = new Peer();
+    const peer = new Peer({  
+        host: '127.0.0.1',  // 可选，指向您的PeerJS服务器（如果有的话）  
+        port: 9000,                  // PeerJS服务器的端口（如果有的话）  
+        path: '/myapp'            // PeerJS服务器的路径（如果有的话） 
+    });
     
     console.log("peer=", peer);
     peer.on('open', function(id) {
@@ -82,7 +94,11 @@ function on_guest_load() {
     });
     
 
-    const videopeer = new Peer();
+    const videopeer = new Peer({  
+        host: '127.0.0.1',  // 可选，指向您的PeerJS服务器（如果有的话）  
+        port: 9000,                  // PeerJS服务器的端口（如果有的话）  
+        path: '/myapp'            // PeerJS服务器的路径（如果有的话） 
+    });
     videopeer.on('open', function(id) {
         console.log('Opened, video peer ID is: ' + id);
         guest_video_id = id;
