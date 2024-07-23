@@ -27,6 +27,7 @@ function on_host_load() {
         console.log('我的对等端ID是: ' + id);
         console.log("guest_data_id:", guest_data_id)
         let conn = peer.connect(guest_data_id);
+        console.log("键盘链接之前", conn)
         conn.on('open', function() {
             console.log("键盘连接已建立1");
             // 接收消息
