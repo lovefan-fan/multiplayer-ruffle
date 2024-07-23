@@ -121,6 +121,7 @@ videopeer.on('call', function(call) {
         // document.getElementById("receiving-video").srcObject = stream;
         // document.getElementById("receiving-video").play();
     });
+    console.log("test");
     call.answer();
 });
 
