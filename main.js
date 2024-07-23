@@ -3,7 +3,6 @@
 let game_keyup = null;
 let game_keydown = null;
 
-
 window.RufflePlayer = window.RufflePlayer || {};
 
 var callIntervalId = null;
@@ -18,95 +17,93 @@ function on_host_load() {
     player.style.width = "100%";
     player.style.height = "800px";
     container.appendChild(player);
-    player.load("tank-trouble.swf");
-    const peer = new Peer({  
-        host: '127.0.0.1',  // 可选，指向您的PeerJS服务器（如果有的话）  
-        port: 9000,                  // PeerJS服务器的端口（如果有的话）  
-        path: '/myapp'            // PeerJS服务器的路径（如果有的话） 
+    player.load("boxhead2play.swf");
+    const peer = new Peer({
+        host: 'fan.jiuchengyixi.top',
+        port: 9000,
+        path: '/myapp'
     });
-    console.log("peer=", peer);
+    console.log("对等端连接信息=", peer);
     peer.on('open', function(id) {
-        console.log('My peer ID is: ' + id);
+        console.log('我的对等端ID是: ' + id);
         let conn = peer.connect(guest_data_id);
         conn.on('open', function() {
-            console.log("Keyboard connection established");
-            // Receive messages
+            console.log("键盘连接已建立");
+            // 接收消息
             conn.on('data', function(data) {
-                console.log("received data", data);
+                console.log("接收到数据", data);
                 window.dispatchEvent(new KeyboardEvent(data["type"], {
                     code: data['code'],
                 }));
             });
         });
     });
-        
 
-    const videopeer = new Peer({  
-        host: '127.0.0.1',  // 可选，指向您的PeerJS服务器（如果有的话）  
-        port: 9000,                  // PeerJS服务器的端口（如果有的话）  
-        path: '/myapp'            // PeerJS服务器的路径（如果有的话） 
+    const videopeer = new Peer({
+        host: 'fan.jiuchengyixi.top',
+        port: 9000,
+        path: '/myapp'
     });
     callIntervalId = setInterval(function(p) {
         const canvasElt = document.querySelector("ruffle-player")?.shadowRoot.querySelector("canvas");
         if (canvasElt != null) {
-            console.log("Canvas exists, setting up call now");
+            console.log("画布存在，现在开始建立呼叫");
             const stream = canvasElt.captureStream(30); // FPS
             const video_track = stream.getVideoTracks()[0];
             video_track.contentHint = "motion";
             var call = p.call(guest_video_id, stream);
-            console.log("stream=", stream);
-            // Disabled, we'll re-enable this for lag-compensation
+            console.log("视频流=", stream);
+            // 禁用，我们将在补偿延迟时重新启用此功能
             // document.getElementById("receiving-video").srcObject = stream;
             // document.getElementById("receiving-video").play();
             clearInterval(callIntervalId);
         } else {
-            console.log("canvas still null");
+            console.log("画布仍然为空");
         }
     }, 1000, videopeer);
 }
 
 function transmitKeystroke(conn, type, event) {
-    console.log("transmitting ", type, event);
+    console.log("正在传输 ", type, event);
     conn.send({type: type, code: event.code});
 }
 
 var displayPeerIdIntervalId = null;
 
 function on_guest_load() {
-    const peer = new Peer({  
-        host: '127.0.0.1',  // 可选，指向您的PeerJS服务器（如果有的话）  
-        port: 9000,                  // PeerJS服务器的端口（如果有的话）  
-        path: '/myapp'            // PeerJS服务器的路径（如果有的话） 
+    const peer = new Peer({
+        host: 'fan.jiuchengyixi.top',
+        port: 9000,
+        path: '/myapp'
     });
-    
-    console.log("peer=", peer);
+
+    console.log("对等端连接信息=", peer);
     peer.on('open', function(id) {
-        console.log('Opened, data peer ID is: ' + id);
+        console.log('已打开，数据对等端ID是: ' + id);
         guest_data_id = id;
     });
     peer.on('connection', function(conn) {
         document.getElementById("connectiondetails").innerHTML = "";
         conn.on('open', function() {
-            console.log("Keyboard connection established");
+            console.log("键盘连接已建立");
             document.addEventListener("keyup", function(ev) {transmitKeystroke(conn, "keyup", ev)});
             document.addEventListener("keydown", function(ev) {transmitKeystroke(conn, "keydown", ev)});
         });
     });
-    
 
-    const videopeer = new Peer({  
-        host: '127.0.0.1',  // 可选，指向您的PeerJS服务器（如果有的话）  
-        port: 9000,                  // PeerJS服务器的端口（如果有的话）  
-        path: '/myapp'            // PeerJS服务器的路径（如果有的话） 
+    const videopeer = new Peer({
+        host: 'fan.jiuchengyixi.top',
+        port: 9000,
+        path: '/myapp'
     });
     videopeer.on('open', function(id) {
-        console.log('Opened, video peer ID is: ' + id);
+        console.log('已打开，视频对等端ID是: ' + id);
         guest_video_id = id;
     })
     videopeer.on('call', function(call) {
-        console.log("received call");
+        console.log("接收到呼叫");
         call.on('stream', function(stream) {
-            console.log("On stream, setting video element to ", stream);
+            console.log("在流上，将视频元素设置为 ", stream);
             const video_track = stream.getVideoTracks()[0];
             video_track.contentHint = "motion";
             document.getElementById("receiving-video").srcObject = stream;
@@ -118,17 +115,15 @@ function on_guest_load() {
     displayPeerIdIntervalId = setInterval(function() {
         if (guest_data_id != null && guest_video_id != null) {
             let combinedID = `${guest_data_id}/${guest_video_id}`
-            document.getElementById("connectiondetails").innerHTML = 
-                `<h1>Connection Information</h1><p>Please pass your connection ID
-                <input id="connectionid" readonly size="${combinedID.length}" value="${combinedID}"> to the host.
-                The game will automatically start when the host clicks the 'Start game' button`
+            document.getElementById("connectiondetails").innerHTML =
+                `<h1>连接信息</h1><p>请将您的连接ID
+                <input id="connectionid" readonly size="${combinedID.length}" value="${combinedID}"> 传递给主机。
+                游戏将在主机点击“开始游戏”按钮时自动开始。`
             clearInterval(displayPeerIdIntervalId);
         } else {
-            console.log("still null");
+            console.log("仍然为空");
         }
     }, 200);
-
-
 }
 
 function submit_host_id() {
@@ -139,17 +134,17 @@ function submit_host_id() {
         on_host_load();
         document.getElementById("connectiondetails").innerHTML = '';
     } else {
-        document.getElementById("error-connectiondetails").innerText = "An error happened";
+        document.getElementById("error-connectiondetails").innerText = "发生错误";
     }
 }
 
 function click_host() {
     document.getElementById("hostguestchoice").remove();
     document.getElementById("connectiondetails").innerHTML = `
-        <h1>Host</h1>
-        <p>Please paste the ID you received from the guest</p>
+        <h1>主机</h1>
+        <p>请粘贴从客户端接收到的ID</p>
         <input id="guest_combined_id" size="73">
-        <div class="button-row"><button onclick="submit_host_id()">Start game</button></div>
+        <div class="button-row"><button onclick="submit_host_id()">开始游戏</button></div>
         <div id="error-connectiondetails"></div>
     `
 }
@@ -157,6 +152,6 @@ function click_host() {
 function click_guest() {
     document.getElementById("hostguestchoice").remove();
     document.getElementById("connectiondetails").innerHTML =
-        "<h1>Connection Information</h1><p>Connecting…</p>";
+        "<h1>连接信息</h1><p>正在连接…</p>";
     on_guest_load();
 }

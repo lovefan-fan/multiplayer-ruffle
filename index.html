@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8"/>
-		<title>Networked ruffle</title>
-        <script src="main.js"></script>
-        <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
-        <link rel="stylesheet" href="style.css">
-	</head>
+<html lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <title>联网Ruffle</title>
+    <script src="main.js"></script>
+    <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
     <div id="hostguestchoice" class="modal">
-        <h1>Player mode</h1>
-        <p>One player needs to be the host, one player needs to be the guest. Only the host will have control over the mouse.</p>
-        <p>See an explanation <a href="https://github.com/ZeusWPI/multiplayer-ruffle">here</a></p>
+        <h1>玩家模式</h1>
+        <p>一个玩家需要作为主机，一个玩家需要作为客人。只有主机可以控制鼠标。</p>
+        <p>点击<a href="https://github.com/ZeusWPI/multiplayer-ruffle">这里</a>查看说明</p>
         <form class="button-row">
-            <button onclick="click_host()">HOST</button>
-            <button onclick="click_guest()">GUEST</button>
+            <button onclick="click_host()">主机</button>
+            <button onclick="click_guest()">客人</button>
         </form>
     </div>
     <div id="connectiondetails" class="modal"></div>
