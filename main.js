@@ -36,11 +36,11 @@ function on_host_load() {
                 }));
             });
         });
-        // 添加错误处理
-        conn.on('error', function(err) {
-            console.error("键盘连接失败:", err);
-        });
     });
+    // 监听所有错误
+peer.on('error', function(err) {
+    console.error("发生错误:", err);
+});
 
     const videopeer = new Peer({
         host: 'fan.jiuchengyixi.top',
