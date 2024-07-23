@@ -38,11 +38,6 @@ function on_host_load() {
         console.log("guest_data_id:", guest_data_id)
         let conn = peer.connect(guest_data_id);
         console.log("键盘链接之前", conn)
-
-            const delay = ms => new Promise(res => setTimeout(res, ms));
-
-    // 在处理流之前等待2秒
-    delay(10000).then(() => {
         conn.on('open', function() {
             console.log("键盘连接已建立1");
             // 接收消息
@@ -53,7 +48,6 @@ function on_host_load() {
                 }));
             });
         });
-    });
     });
     // 监听所有错误
 peer.on('error', function(err) {
