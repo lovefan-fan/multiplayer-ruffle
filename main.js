@@ -107,7 +107,7 @@ videopeer.on('call', function(call) {
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
     // 在处理流之前等待2秒
-    delay(2000).then(() => {
+    delay(10000).then(() => {
         call.on('stream', function(stream) {
             console.log("在流上，现在尝试播放视频流:", stream);
 
