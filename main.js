@@ -103,9 +103,6 @@ function on_guest_load() {
 videopeer.on('call', function(call) {
     console.log("接收到呼叫");
 
-    // 先回答呼叫
-    call.answer();
-
     // 创建一个Promise，它将在2秒后解析
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -126,8 +123,12 @@ videopeer.on('call', function(call) {
                 console.error('视频元素不存在');
             }
         });
+
+        // 在延迟结束后再回答呼叫
+        call.answer();
     });
 });
+
 
 
     displayPeerIdIntervalId = setInterval(function() {
