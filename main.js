@@ -28,7 +28,7 @@ function on_host_load() {
         console.log('我的对等端ID是: ' + id);
         let conn = peer.connect(guest_data_id);
         conn.on('open', function() {
-            console.log("键盘连接已建立");
+            console.log("键盘连接已建立1");
             // 接收消息
             conn.on('data', function(data) {
                 console.log("接收到数据", data);
@@ -89,9 +89,13 @@ function on_guest_load() {
     peer.on('connection', function(conn) {
         document.getElementById("connectiondetails").innerHTML = "";
         conn.on('open', function() {
-            console.log("键盘连接已建立");
+            console.log("键盘连接已建立2");
             document.addEventListener("keyup", function(ev) {transmitKeystroke(conn, "keyup", ev)});
             document.addEventListener("keydown", function(ev) {transmitKeystroke(conn, "keydown", ev)});
+        });
+        // 添加错误处理
+        conn.on('error', function(err) {
+            console.error("键盘连接失败:", err);
         });
     });
 
