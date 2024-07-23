@@ -20,7 +20,17 @@ function on_host_load() {
     player.load("boxhead2play.swf");
     const peer = new Peer({
         host: 'fan.jiuchengyixi.top',
-        port: 9000
+        port: 9000,
+        secure: false, // 如果您使用SSL/TLS，请设置为true
+        config: {
+           iceServers: [
+               {
+                   urls: 'turn:fan.jiuchengyixi.top:3478', // 替换为您的TURN服务器地址和端口
+                   username: 'fanfan', // 替换为您的TURN服务器用户名
+                   credential: '0987612345' // 替换为您的TURN服务器密码
+               }
+           ]
+       }
     });
     console.log("对等端连接信息=", peer);
     peer.on('open', function(id) {
@@ -52,7 +62,17 @@ peer.on('error', function(err) {
 
     const videopeer = new Peer({
         host: 'fan.jiuchengyixi.top',
-        port: 9000
+        port: 9000,
+        secure: false, // 如果您使用SSL/TLS，请设置为true
+        config: {
+           iceServers: [
+               {
+                   urls: 'turn:fan.jiuchengyixi.top:3478', // 替换为您的TURN服务器地址和端口
+                   username: 'fanfan', // 替换为您的TURN服务器用户名
+                   credential: '0987612345' // 替换为您的TURN服务器密码
+               }
+           ]
+       }
     });
     callIntervalId = setInterval(function(p) {
         const canvasElt = document.querySelector("ruffle-player")?.shadowRoot.querySelector("canvas");
@@ -83,7 +103,17 @@ var displayPeerIdIntervalId = null;
 function on_guest_load() {
     const peer = new Peer({
         host: 'fan.jiuchengyixi.top',
-        port: 9000
+        port: 9000,
+        secure: false, // 如果您使用SSL/TLS，请设置为true
+        config: {
+           iceServers: [
+               {
+                   urls: 'turn:fan.jiuchengyixi.top:3478', // 替换为您的TURN服务器地址和端口
+                   username: 'fanfan', // 替换为您的TURN服务器用户名
+                   credential: '0987612345' // 替换为您的TURN服务器密码
+               }
+           ]
+       }
     });
 
     console.log("对等端连接信息=", peer);
@@ -106,7 +136,17 @@ function on_guest_load() {
 
     const videopeer = new Peer({
         host: 'fan.jiuchengyixi.top',
-        port: 9000
+        port: 9000,
+        secure: false, // 如果您使用SSL/TLS，请设置为true
+        config: {
+           iceServers: [
+               {
+                   urls: 'turn:fan.jiuchengyixi.top:3478', // 替换为您的TURN服务器地址和端口
+                   username: 'fanfan', // 替换为您的TURN服务器用户名
+                   credential: '0987612345' // 替换为您的TURN服务器密码
+               }
+           ]
+       }
     });
     videopeer.on('open', function(id) {
         console.log('已打开，视频对等端ID是: ' + id);
