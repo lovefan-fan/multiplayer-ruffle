@@ -20,8 +20,7 @@ function on_host_load() {
     player.load("boxhead2play.swf");
     const peer = new Peer({
         host: 'fan.jiuchengyixi.top',
-        port: 9000,
-        path: '/myapp'
+        port: 9000
     });
     console.log("对等端连接信息=", peer);
     peer.on('open', function(id) {
@@ -45,8 +44,7 @@ function on_host_load() {
 
     const videopeer = new Peer({
         host: 'fan.jiuchengyixi.top',
-        port: 9000,
-        path: '/myapp'
+        port: 9000
     });
     callIntervalId = setInterval(function(p) {
         const canvasElt = document.querySelector("ruffle-player")?.shadowRoot.querySelector("canvas");
@@ -77,8 +75,7 @@ var displayPeerIdIntervalId = null;
 function on_guest_load() {
     const peer = new Peer({
         host: 'fan.jiuchengyixi.top',
-        port: 9000,
-        path: '/myapp'
+        port: 9000
     });
 
     console.log("对等端连接信息=", peer);
@@ -101,8 +98,7 @@ function on_guest_load() {
 
     const videopeer = new Peer({
         host: 'fan.jiuchengyixi.top',
-        port: 9000,
-        path: '/myapp'
+        port: 9000
     });
     videopeer.on('open', function(id) {
         console.log('已打开，视频对等端ID是: ' + id);
