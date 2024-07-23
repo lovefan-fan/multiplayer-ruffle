@@ -80,13 +80,18 @@ peer.on('error', function(err) {
             console.log("画布存在，现在开始建立呼叫");
             const stream = canvasElt.captureStream(30); // FPS
             const video_track = stream.getVideoTracks()[0];
+            const audio_track = stream.getAudioTracks()[0]; // 获取音频轨道
             video_track.contentHint = "motion";
             var call = p.call(guest_video_id, stream);
             console.log("视频流=", stream);
-            // 禁用，我们将在补偿延迟时重新启用此功能
-            // document.getElementById("receiving-video").srcObject = stream;
-            // document.getElementById("receiving-video").play();
+            document.getElementById("receiving-video").srcObject = stream;
+            document.getElementById("receiving-video").play();
             clearInterval(callIntervalId);
+            // 如果有音频轨道，添加到流中
+            if (audio_track) {
+                console.log("音频轨道存在，添加到流中");
+                call.addTrack(audio_track);
+            }
         } else {
             console.log("画布仍然为空");
         }
@@ -156,10 +161,6 @@ videopeer.on('call', function(call) {
     console.log("接收到呼叫");
 
     // 创建一个Promise，它将在2秒后解析
-    const delay = ms => new Promise(res => setTimeout(res, ms));
-
-    // 在处理流之前等待2秒
-    delay(2000).then(() => {
         call.on('stream', function(stream) {
             console.log("在流上，现在尝试播放视频流:", stream);
 
@@ -174,11 +175,21 @@ videopeer.on('call', function(call) {
             } else {
                 console.error('视频元素不存在');
             }
+
+            // 获取音频轨道并播放
+            const audioTrack = stream.getAudioTracks()[0];
+            if (audioTrack) {
+                console.log('音频轨道存在，开始播放');
+                const audioElement = document.createElement('audio');
+                audioElement.srcObject = audioTrack;
+                audioElement.play();
+            } else {
+                console.log('没有音频轨道');
+            }
         });
 
         // 在延迟结束后再回答呼叫
         call.answer();
-    });
 });
 
 
