@@ -12,7 +12,7 @@ RUN npm install
 
 # 如果你的项目有额外的文件或目录需要复制，可以在这里添加 COPY 指令
 # 例如：COPY . .
-
+COPY server.js ./
 # 设置容器启动时运行的命令
 CMD [ "node", "server.js" ]
 
