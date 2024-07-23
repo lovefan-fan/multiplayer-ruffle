@@ -40,7 +40,7 @@ function on_host_load() {
         });
     });
     // 监听所有错误
-peer.on('error', function(err) {
+conn.on('error', function(err) {
     console.error("发生错误:", err);
 });
 
