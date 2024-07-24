@@ -101,7 +101,8 @@ function    reconnect() {
             clearInterval(callIntervalId);
             guest_video_id = null;
             guest_data_id = null;
-            videopeer = new Peer({host: 'fan.jiuchengyixi.top', port: 9000, secure: false, config: {'iceServers': iceServers}});
+    let videopeer;
+    videopeer = new Peer({host: 'fan.jiuchengyixi.top', port: 9000, secure: false, config: {'iceServers': iceServers}});
             videopeer.on('open', id => {
                 console.log(`My peer ID is: ${id}`);
                 videopeer.connect(`host/${host_peer_id}`);
