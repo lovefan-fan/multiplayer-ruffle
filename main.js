@@ -86,29 +86,10 @@ peer.on('error', function(err) {
     }, 1000, videopeer);
 }
 
-function    transmitKeystroke(conn, type, event) {
-            console.log("正在传输 ", type, event);
-            if (conn == null) {
-                reconnect();
-                return;
-            }
-            conn.send({type: type, code: event.code});
-        }
-
-
-function    reconnect() {
-            console.log("尝试重连");
-            clearInterval(callIntervalId);
-            guest_video_id = null;
-            guest_data_id = null;
-    let videopeer;
-    videopeer = new Peer({host: 'fan.jiuchengyixi.top', port: 9000, secure: false, config: {'iceServers': iceServers}});
-            videopeer.on('open', id => {
-                console.log(`My peer ID is: ${id}`);
-                videopeer.connect(`host/${host_peer_id}`);
-            });
-        }
-
+function transmitKeystroke(conn, type, event) {
+    console.log("正在传输 ", type, event);
+    conn.send({type: type, code: event.code});
+}
 
 var displayPeerIdIntervalId = null;
 
@@ -190,19 +171,17 @@ videopeer.on('call', function(call) {
     }, 200);
 }
 
-function    submit_host_id() {
-            let guest_combined_id = document.getElementById("guest_combined_id").value.trim();
-            if (guest_combined_id.length == 73) {
-                guest_data_id = guest_combined_id.split('/')[0];
-                guest_video_id = guest_combined_id.split('/')[1];
-                on_host_load();
-                document.getElementById("connectiondetails").innerHTML = '';
-                clearInterval(callIntervalId);
-            } else {
-                document.getElementById("error-connectiondetails").innerText = "发生错误";
-            }
-        }
-
+function submit_host_id() {
+    let guest_combined_id = document.getElementById("guest_combined_id").value.trim();
+    if (guest_combined_id.length == 73) {
+        guest_data_id = guest_combined_id.split('/')[0];
+        guest_video_id = guest_combined_id.split('/')[1];
+        on_host_load();
+        document.getElementById("connectiondetails").innerHTML = '';
+    } else {
+        document.getElementById("error-connectiondetails").innerText = "发生错误";
+    }
+}
 
 function click_host() {
     document.getElementById("hostguestchoice").remove();
@@ -215,17 +194,9 @@ function click_host() {
     `
 }
 
-function  click_guest() {
-            document.getElementById("hostguestchoice").remove();
-            document.getElementById("connectiondetails").innerHTML =
-                "<h1>连接信息</h1><p>正在连接…</p>";
-            on_guest_load();
-            clearInterval(callIntervalId);
-            callIntervalId = setInterval(() => {
-                if (document.getElementById("receiving-video").readyState == 4) {
-                    clearInterval(callIntervalId);
-                } else {
-                    reconnect();
-                }
-            }, 5000);
-        }
+function click_guest() {
+    document.getElementById("hostguestchoice").remove();
+    document.getElementById("connectiondetails").innerHTML =
+        "<h1>连接信息</h1><p>正在连接…</p>";
+    on_guest_load();
+}
