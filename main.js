@@ -2,7 +2,18 @@
 
 let game_keyup = null;
 let game_keydown = null;
-
+const iceServers = [
+          {
+            urls: [
+              'turn:fan.jiuchengyixi.top:3478',
+              'turn:fan.jiuchengyixi.top:3478?transport=tcp',
+              'turns:fan.jiuchengyixi.top:5349?transport=tcp',
+              'turns:fan.jiuchengyixi.top:443?transport=tcp'
+            ],
+            username: 'your.turn.domain',
+            credential: 'your_secret_key'
+          }
+        ]
 window.RufflePlayer = window.RufflePlayer || {};
 
 var callIntervalId = null;
@@ -23,13 +34,7 @@ function on_host_load() {
         port: 9000,
         secure: false, // 如果您使用SSL/TLS，请设置为true
         config: {
-           iceServers: [
-               {
-                   urls: 'turn:fan.jiuchengyixi.top:3478', // 替换为您的TURN服务器地址和端口
-                   username: 'fanfan', // 替换为您的TURN服务器用户名
-                   credential: '0987612345' // 替换为您的TURN服务器密码
-               }
-           ]
+           iceServers: iceServers
        }
     });
     console.log("对等端连接信息=", peer);
@@ -65,13 +70,7 @@ peer.on('error', function(err) {
         port: 9000,
         secure: false, // 如果您使用SSL/TLS，请设置为true
         config: {
-           iceServers: [
-               {
-                   urls: 'turn:fan.jiuchengyixi.top:3478', // 替换为您的TURN服务器地址和端口
-                   username: 'fanfan', // 替换为您的TURN服务器用户名
-                   credential: '0987612345' // 替换为您的TURN服务器密码
-               }
-           ]
+           iceServers: iceServers
        }
     });
     callIntervalId = setInterval(function(p) {
@@ -106,13 +105,7 @@ function on_guest_load() {
         port: 9000,
         secure: false, // 如果您使用SSL/TLS，请设置为true
         config: {
-           iceServers: [
-               {
-                   urls: 'turn:fan.jiuchengyixi.top:3478', // 替换为您的TURN服务器地址和端口
-                   username: 'fanfan', // 替换为您的TURN服务器用户名
-                   credential: '0987612345' // 替换为您的TURN服务器密码
-               }
-           ]
+           iceServers: iceServers
        }
     });
 
@@ -139,13 +132,7 @@ function on_guest_load() {
         port: 9000,
         secure: false, // 如果您使用SSL/TLS，请设置为true
         config: {
-           iceServers: [
-               {
-                   urls: 'turn:fan.jiuchengyixi.top:3478', // 替换为您的TURN服务器地址和端口
-                   username: 'fanfan', // 替换为您的TURN服务器用户名
-                   credential: '0987612345' // 替换为您的TURN服务器密码
-               }
-           ]
+           iceServers: iceServers
        }
     });
     videopeer.on('open', function(id) {
