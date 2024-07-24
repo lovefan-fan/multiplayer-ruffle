@@ -135,12 +135,6 @@ function on_guest_load() {
     })
 videopeer.on('call', function(call) {
     console.log("接收到呼叫");
-
-    // 创建一个Promise，它将在2秒后解析
-    const delay = ms => new Promise(res => setTimeout(res, ms));
-
-    // 在处理流之前等待2秒
-    delay(2000).then(() => {
         call.on('stream', function(stream) {
             console.log("在流上，现在尝试播放视频流:", stream);
 
@@ -159,7 +153,6 @@ videopeer.on('call', function(call) {
 
         // 在延迟结束后再回答呼叫
         call.answer();
-    });
 });
 
 
